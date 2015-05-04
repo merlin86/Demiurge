@@ -33,7 +33,11 @@ QT += qml quick widgets
 
 # Project source files
 SOURCES += \
-    src/main.cpp
+    src/main.cpp \
+    src/legends_data.cpp
+
+HEADERS += \
+    src/legends_data.hpp
 
 RESOURCES += \
     qml/qml.qrc

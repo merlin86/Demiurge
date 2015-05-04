@@ -32,6 +32,8 @@ import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 
+import Demiurge.LegendsData 1.0
+
 ApplicationWindow {
   title: qsTr("Demiurge")
   width: 1024
@@ -63,6 +65,6 @@ ApplicationWindow {
     title: qsTr("Choose the main legends XML file...")
     nameFilters: [qsTr("XML files (*.xml)"), qsTr("All files (*.*)")]
 
-    onAccepted: console.log(openFileDialog.fileUrl)
+    onAccepted: LegendsData.load(openFileDialog.fileUrl)
   }
 }

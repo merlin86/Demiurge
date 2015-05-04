@@ -1,4 +1,4 @@
-// main.cpp - Application entry point
+// legends_data.cpp - LegendsData class implementation
 // Demiurge - A Dwarf Fortress Legends visualization tool
 // Copyright (c) 2015 Vadim Litvinov <vadim_litvinov@fastmail.com>
 // All rights reserved.
@@ -27,35 +27,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 
-#include <QtQml>
-#include <QApplication>
-#include <QQmlApplicationEngine>
+#include <QtCore>
 #include "legends_data.hpp"
 
-static QObject* demiurge_legendsdata_sigletontype_provider(QQmlEngine* engine, QJSEngine* scriptEngine) {
-  Q_UNUSED(engine)
-  Q_UNUSED(scriptEngine)
+using namespace demiurge;
 
-  demiurge::LegendsData* data = new demiurge::LegendsData();
-  return (QObject*)data;
-}
+bool LegendsData::load(const QString& fileName) {
+  qDebug() << "Loading legends from" << fileName;
 
-int main(int argc, char* argv[]) {
-  QApplication app(argc, argv);
-
-  // Setting application parameters
-  app.setApplicationName(QObject::tr("Demiurge"));
-  app.setApplicationVersion(QObject::tr("1.0.0"));
-  app.setOrganizationDomain(QObject::tr("vlitvinov.org"));
-  app.setOrganizationName(QObject::tr("vlitvinov"));
-
-  // Registering QML types
-  qmlRegisterSingletonType<demiurge::LegendsData>("Demiurge.LegendsData", 1, 0, "LegendsData",
-                                                  demiurge_legendsdata_sigletontype_provider);
-
-  // Setting up the QML engine
-  QQmlApplicationEngine engine;
-  engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
-  return app.exec();
+  return true;
 }
