@@ -33,18 +33,36 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
-    title: qsTr("Demiurge")
-    width: 1024
-    height: 768
-    visible: true
+  title: qsTr("Demiurge")
+  width: 1024
+  height: 768
+  visible: true
 
-    menuBar: MenuBar {
-        Menu {
-            title: qsTr("&File")
-            MenuItem {
-                text: qsTr("E&xit")
-                onTriggered: Qt.quit();
-            }
-        }
+  menuBar: MenuBar {
+    Menu {
+      title: qsTr("&File")
+
+      MenuItem {
+        text: qsTr("&Open...")
+        shortcut: "Ctrl+O"
+        onTriggered: openFileDialog.open()
+      }
+
+      MenuSeparator {}
+
+      MenuItem {
+        text: qsTr("&Quit")
+        shortcut: "Ctrl+Q"
+        onTriggered: Qt.quit();
+      }
     }
+  }
+
+  FileDialog {
+    id: openFileDialog
+    title: qsTr("Choose the main legends XML file...")
+    nameFilters: [qsTr("XML files (*.xml)"), qsTr("All files (*.*)")]
+
+    onAccepted: console.log(openFileDialog.fileUrl)
+  }
 }

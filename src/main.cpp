@@ -33,6 +33,13 @@
 int main(int argc, char* argv[]) {
   QApplication app(argc, argv);
 
+  // Setting application parameters
+  app.setApplicationName(QObject::tr("Demiurge"));
+  app.setApplicationVersion(QObject::tr("1.0.0"));
+  app.setOrganizationDomain(QObject::tr("vlitvinov.org"));
+  app.setOrganizationName(QObject::tr("vlitvinov"));
+
+  // Setting up the QML engine
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
