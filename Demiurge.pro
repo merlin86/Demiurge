@@ -29,7 +29,13 @@
 
 # General project configuration
 TEMPLATE = app
+CONFIG += c++11
 QT += qml quick widgets
+
+# Platform specific adjustements
+macx {
+  QMAKE_CXXFLAGS_WARN_ON += -Wno-unknown-pragmas
+}
 
 # Project source files
 SOURCES += \
