@@ -43,7 +43,8 @@ SOURCES += \
     src/legends_data.cpp
 
 HEADERS += \
-    src/legends_data.hpp
+    src/legends_data.hpp \
+    src/world/region.hpp
 
 RESOURCES += \
     qml/qml.qrc

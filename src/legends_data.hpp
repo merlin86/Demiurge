@@ -31,19 +31,33 @@
 #define _DEMIURGE_LEGENDS_DATA_HPP_
 
 #include <QObject>
+#include <QVector>
+#include <QQmlListProperty>
+#include "world/region.hpp"
 
 namespace demiurge {
   class LegendsData: public QObject {
     Q_OBJECT
+    Q_PROPERTY(QQmlListProperty<world::Region> regions READ qml_regions)
 
   public:
-    explicit LegendsData(QObject* parent = 0): QObject(parent) {}
+    explicit LegendsData(QObject* parent = nullptr): QObject(parent) {}
     virtual ~LegendsData() {}
+
+    QVector<world::Region*>& regions() { return regions_; }
+    const QVector<world::Region*>& regions() const { return regions_; }
+
+    QQmlListProperty<world::Region> qml_regions();
 
     Q_INVOKABLE bool load(const QString& fileName);
 
   private:
     Q_DISABLE_COPY(LegendsData)
+
+    static int qml_regions_count_(QQmlListProperty<world::Region>* property);
+    static world::Region* qml_regions_at_(QQmlListProperty<world::Region>* property, int index);
+
+    QVector<world::Region*>  regions_;
   };
 }
 

@@ -28,12 +28,30 @@
 // SUCH DAMAGE.
 
 #include <QtCore>
+#include <QtQml>
 #include "legends_data.hpp"
 
 using namespace demiurge;
+using namespace demiurge::world;
+
+QQmlListProperty<Region> LegendsData::qml_regions() {
+  return QQmlListProperty<Region>(this, nullptr, &LegendsData::qml_regions_count_, &LegendsData::qml_regions_at_);
+}
 
 bool LegendsData::load(const QString& fileName) {
   qDebug() << "Loading legends from" << fileName;
 
   return true;
+}
+
+int LegendsData::qml_regions_count_(QQmlListProperty<Region>* property) {
+  LegendsData* legends = qobject_cast<LegendsData*>(property->object);
+  if(legends) return legends->regions_.count();
+  else return 0;
+}
+
+Region* LegendsData::qml_regions_at_(QQmlListProperty<Region>* property, int index) {
+  LegendsData* legends = qobject_cast<LegendsData*>(property->object);
+  if(legends) return legends->regions_.at(index);
+  else return nullptr;
 }

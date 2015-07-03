@@ -1,4 +1,4 @@
-// main.cpp - Application entry point
+// region.hpp - Region class definition
 // Demiurge - A Dwarf Fortress Legends visualization tool
 // Copyright (c) 2015 Vadim Litvinov <vadim_litvinov@fastmail.com>
 // All rights reserved.
@@ -27,44 +27,35 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 
-#include <QtQml>
-#include <QApplication>
-#include <QQmlApplicationEngine>
-#include "legends_data.hpp"
-#include "world/region.hpp"
+#ifndef _DEMIURGE_LEGENDS_WORLD_REGION_HPP_
+#define _DEMIURGE_LEGENDS_WORLD_REGION_HPP_
 
-static QObject* demiurge_legendsdata_sigletontype_provider(QQmlEngine* engine, QJSEngine* scriptEngine) {
-  Q_UNUSED(engine)
-  Q_UNUSED(scriptEngine)
+#include <QObject>
+#include <QString>
 
-  demiurge::LegendsData* data = new demiurge::LegendsData();
-  return (QObject*)data;
+namespace demiurge {
+  namespace world {
+    class Region: public QObject {
+      Q_OBJECT
+      Q_PROPERTY(QString name READ name CONSTANT)
+      Q_PROPERTY(QString type READ type CONSTANT)
+
+    public:
+      explicit Region(QObject* parent = nullptr): QObject(parent) {}
+      Region(const QString& name, const QString& type, QObject* parent = nullptr):
+        QObject(parent), name_(name), type_(type) {}
+      virtual ~Region() {}
+
+      const QString& name() const { return name_; }
+      const QString& type() const { return type_; }
+
+    private:
+      Q_DISABLE_COPY(Region)
+
+      const QString name_;
+      const QString type_;
+    };
+  }
 }
 
-void register_qml_types() {
-  // Registering instanciable types
-  qmlRegisterType<demiurge::world::Region>("Demiurge.LegendsData", 1, 0, "Region");
-
-  // Registering singleton types
-  qmlRegisterSingletonType<demiurge::LegendsData>("Demiurge.LegendsData", 1, 0, "LegendsData",
-                                                  demiurge_legendsdata_sigletontype_provider);
-}
-
-int main(int argc, char* argv[]) {
-  QApplication app(argc, argv);
-
-  // Setting application parameters
-  app.setApplicationName(QObject::tr("Demiurge"));
-  app.setApplicationVersion(QObject::tr("1.0.0"));
-  app.setOrganizationDomain(QObject::tr("vlitvinov.org"));
-  app.setOrganizationName(QObject::tr("vlitvinov"));
-
-  // Registering QML types
-  register_qml_types();
-
-  // Setting up the QML engine
-  QQmlApplicationEngine engine;
-  engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
-  return app.exec();
-}
+#endif
