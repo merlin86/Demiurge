@@ -1,4 +1,4 @@
-// legends_data.cpp - LegendsData class implementation
+// legends_xml_parser.hpp - LegendsXMLParser class definition
 // Demiurge - A Dwarf Fortress Legends visualization tool
 // Copyright (c) 2015 Vadim Litvinov <vadim_litvinov@fastmail.com>
 // All rights reserved.
@@ -27,31 +27,37 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 
-#include <QtCore>
-#include <QtQml>
-#include "legends_data.hpp"
-#include "legends_xml_parser.hpp"
+#ifndef _DEMIURGE_LEGENDS_XML_PARSER_HPP_
+#define _DEMIURGE_LEGENDS_XML_PARSER_HPP_
 
-using namespace demiurge;
-using namespace demiurge::world;
+#include <QString>
+#include <QXmlStreamReader>
 
-QQmlListProperty<Region> LegendsData::qml_regions() {
-  return QQmlListProperty<Region>(this, nullptr, &LegendsData::qml_regions_count_, &LegendsData::qml_regions_at_);
+namespace demiurge {
+  class LegendsData;
+
+  class LegendsXMLParser {
+  public:
+    LegendsXMLParser(LegendsData* legends, const QString& fileName);
+
+    bool parse();
+    const QString& errorMessage() const { return errorMessage_; }
+
+  private:
+    Q_DISABLE_COPY(LegendsXMLParser)
+
+    bool parse_file_();
+    bool parse_world_();
+    bool parse_regions_();
+
+    bool parse_region_();
+
+    QString           fileName_;
+    QXmlStreamReader  xml_;
+    LegendsData*      legends_;
+
+    QString           errorMessage_;
+  };
 }
 
-bool LegendsData::load(const QString& fileName) {
-  LegendsXMLParser parser(this, fileName);
-  return parser.parse();
-}
-
-int LegendsData::qml_regions_count_(QQmlListProperty<Region>* property) {
-  LegendsData* legends = qobject_cast<LegendsData*>(property->object);
-  if(legends) return legends->regions_.count();
-  else return 0;
-}
-
-Region* LegendsData::qml_regions_at_(QQmlListProperty<Region>* property, int index) {
-  LegendsData* legends = qobject_cast<LegendsData*>(property->object);
-  if(legends) return legends->regions_.at(index);
-  else return nullptr;
-}
+#endif

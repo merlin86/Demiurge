@@ -40,11 +40,13 @@ macx {
 # Project source files
 SOURCES += \
     src/main.cpp \
-    src/legends_data.cpp
+    src/legends_data.cpp \
+    src/legends_xml_parser.cpp
 
 HEADERS += \
     src/legends_data.hpp \
-    src/world/region.hpp
+    src/world/region.hpp \
+    src/legends_xml_parser.hpp
 
 RESOURCES += \
     qml/qml.qrc

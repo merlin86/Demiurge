@@ -37,23 +37,26 @@ namespace demiurge {
   namespace world {
     class Region: public QObject {
       Q_OBJECT
+      Q_ENUMS(Type)
       Q_PROPERTY(QString name READ name CONSTANT)
-      Q_PROPERTY(QString type READ type CONSTANT)
+      Q_PROPERTY(Type type READ type CONSTANT)
 
     public:
-      explicit Region(QObject* parent = nullptr): QObject(parent) {}
-      Region(const QString& name, const QString& type, QObject* parent = nullptr):
+      enum Type { Unknown, Desert, Forest, Glacier, Grassland, Hills, Lake, Mountains, Ocean, Tundra, Wetland };
+
+      explicit Region(QObject* parent = nullptr): QObject(parent), type_(Unknown) {}
+      Region(const QString& name, Type type, QObject* parent = nullptr):
         QObject(parent), name_(name), type_(type) {}
       virtual ~Region() {}
 
       const QString& name() const { return name_; }
-      const QString& type() const { return type_; }
+      Type type() const { return type_; }
 
     private:
       Q_DISABLE_COPY(Region)
 
       const QString name_;
-      const QString type_;
+      const Type    type_;
     };
   }
 }
